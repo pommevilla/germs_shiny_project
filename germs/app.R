@@ -16,9 +16,13 @@ ui <- dashboardPage(
   dashboardHeader(),
   dashboardSidebar(
     selectInput("v_species", "Flower Species",
-                               choices = iris %>% distinct(Species)),
+                choices = iris %>% distinct(Species)),
     
-      downloadButton("report", "Download Iris report", style = "width:100%;")
+    downloadButton(
+      "report", 
+      "Download Iris report",
+      style = "width:80%; display:block; margin-left:auto; margin-right:auto"
+    )
     
     # downloadHandler(
     #   filename = function() {
@@ -28,7 +32,8 @@ ui <- dashboardPage(
     # )
     
   ),
-  dashboardBody(fluidPage(DTOutput('tbl')))
+  dashboardBody(
+    fluidPage(DTOutput('tbl')))
 )
 
 # Define server logic required to draw a histogram
