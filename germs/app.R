@@ -1,17 +1,8 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
-
 library(shiny)
 library(shinydashboard)
 library(DT)
+library(tidyverse)
 
-# Define UI for application that draws a histogram
 ui <- dashboardPage(
   dashboardHeader(),
   dashboardSidebar(
@@ -23,46 +14,36 @@ ui <- dashboardPage(
       "Download Iris report",
       style = "width:80%; display:block; margin-left:auto; margin-right:auto"
     )
-    
-    # downloadHandler(
-    #   filename = function() {
-    #     paste0("Testing_IRIS", Sys.Date(), "csv")
-    #   },
-    #   content = function
-    # )
-    
   ),
   dashboardBody(
     fluidPage(DTOutput('tbl')))
 )
 
-# Define server logic required to draw a histogram
 server <- function(input, output) {
   output$tbl = renderDT(
     iris %>% filter(Species %in% input$v_species), 
     options = list(lengthChange = FALSE)
     )
-  output$downloadData <- downloadHandler(
+  output$report <- downloadHandler(
     filename = function() {
-      paste("data-", Sys.Date(), ".csv", sep="")
+      paste0("data-", Sys.Date(), ".html")
     },
     content = function(file) {
-      write.csv(
-        iris %>% filter(Species %in% input$v_species), 
-        file
+      temp_report <- file.path(tempdir(), "sample_iris_param_report.Rmd")
+      file.copy("reports/sample_iris_param_report.Rmd", temp_report, overwrite = TRUE)
+      params <- list(
+        df = iris %>% filter(Species %in% input$v_species),
+        species = input$v_species
+      )
+      rmarkdown::render(
+        temp_report,
+        output_file = file,
+        params = params,
+        envir = new.env(parent = globalenv())
       )
     }
   )
 }
 
-# Run the application 
 shinyApp(ui = ui, server = server)
 
-# shinyApp(
-#   ui = fluidPage(DTOutput('tbl')),
-#   server = function(input, output) {
-#     output$tbl = renderDT(
-#       iris, options = list(lengthChange = FALSE)
-#     )
-#   }
-# )

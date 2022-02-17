@@ -2,7 +2,8 @@
 title: "Example Iris"
 output: html_document
 params:
-  x: NA
+  df: NA
+  species: NA
 ---
 
 ```{r}
@@ -10,10 +11,15 @@ library(tidyverse)
 ```
 
 ```{r}
-iris %>% 
+this_title <- str_interp("Iris dataset: Species ${params$species}")
+
+params$df %>% 
   ggplot(aes(Sepal.Length, Sepal.Width, size = Petal.Width)) +
   geom_point() +
-  theme_minimal()
+  theme_minimal() +
+  labs(
+    title = this_title
+  )
 ```
 
 
