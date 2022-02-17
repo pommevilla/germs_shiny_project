@@ -1,0 +1,19 @@
+---
+title: "Example Iris"
+output: html_document
+params:
+  x: NA
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+iris %>% 
+  ggplot(aes(Sepal.Length, Sepal.Width, size = Petal.Width)) +
+  geom_point() +
+  theme_minimal()
+```
+
+
