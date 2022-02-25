@@ -16,12 +16,31 @@ ui <- dashboardPage(
     )
   ),
   dashboardBody(
-    fluidPage(DTOutput('tbl')))
+    fluidPage(
+      fluidRow(
+        column(12, plotOutput("iris_plot"))
+      ),
+      DTOutput('tbl')))
 )
 
 server <- function(input, output) {
+  filtered_df <- reactive(iris %>% filter(Species %in% input$v_species))
+  
+  
+  output$iris_plot = renderPlot({
+    
+    this_title <- str_interp("Sepal Width Vs. Sepal Length for ${input$v_species}")
+    
+    ggplot(filtered_df(), aes(x = Sepal.Length, y = Sepal.Width)) +
+      geom_point() +
+      theme_minimal() + 
+      labs(
+        title = this_title
+      )
+    
+  })
   output$tbl = renderDT(
-    iris %>% filter(Species %in% input$v_species), 
+    filtered_df(),
     options = list(lengthChange = FALSE)
     )
   output$report <- downloadHandler(
