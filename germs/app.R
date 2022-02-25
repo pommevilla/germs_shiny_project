@@ -29,10 +29,15 @@ server <- function(input, output) {
   
   output$iris_plot = renderPlot({
     
+    this_title <- str_interp("Sepal Width Vs. Sepal Length for ${input$v_species}")
+    
     ggplot(filtered_df(), aes(x = Sepal.Length, y = Sepal.Width)) +
       geom_point() +
       theme_minimal() + 
-      ggtitle(sprintf("Sepal Width Vs. Sepal Length for %s", input$v_species))
+      labs(
+        title = this_title
+      )
+    
   })
   output$tbl = renderDT(
     filtered_df(),
