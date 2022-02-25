@@ -6,6 +6,10 @@ library(tidyverse)
 ui <- dashboardPage(
   dashboardHeader(),
   dashboardSidebar(
+    sidebarMenu(
+      menuItem("Visualizations", tabName = "visualizations", icon = icon("dashboard")),
+      menuItem("Statistics", tabName = "statistics", icon = icon("th"))
+    ),
     selectInput("v_species", "Flower Species",
                 choices = iris %>% distinct(Species)),
     
@@ -16,11 +20,12 @@ ui <- dashboardPage(
     )
   ),
   dashboardBody(
-    fluidPage(
-      fluidRow(
-        column(12, plotOutput("iris_plot"))
+    tabItems( 
+      tabItem(tabName = "visualizations", fluidPage(fluidRow(column(12, plotOutput("iris_plot")) ), DTOutput('tbl'))),
+      tabItem(tabName = "statistics", h2("Stuff"),
+              fluidPage(box("Does this work?")))
       ),
-      DTOutput('tbl')))
+  )
 )
 
 server <- function(input, output) {
