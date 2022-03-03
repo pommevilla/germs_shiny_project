@@ -45,7 +45,9 @@ new_df_18 <- df_18 %>%
          `16S` = `16S rRNA gene\r\n(copies/mL)`,
          mcyA.M = `MicrocystismcyA gene\r\n(copies/mL)`,
          mcyA.P = `PlanktothrixmcyA gene\r\n(copies/mL)`,
-         mcyA.A = `AanabaenamcyA gene\r\n(copies/mL)`) %>% 
+         mcyA.A = `AanabaenamcyA gene\r\n(copies/mL)`,
+         Microcystin = `Microcystin \r\nRAW Value \r\n[ug/L]`
+         ) %>% 
   mutate(year = "2018")
 
 new_df_19 <- df_19 %>% 
@@ -63,7 +65,7 @@ new_df_21 <- df_21 %>%
   mutate(year = '2021')
 
 
-# d) So now including the year variable, there should be 10 common columns in the four modified dataframes
+# d) So now including the year variable, there should be 11 common columns in the four modified dataframes
 new_common_cols <- Reduce(intersect, list(colnames(new_df_18), colnames(new_df_19), colnames(new_df_20), colnames(new_df_21)))
 
 ## 3. extract the new common columns in each dataframe and concatenate them into one dataframe
@@ -71,5 +73,7 @@ DNR_all_years <-  do.call("rbind", list(new_df_18 %>% select(new_common_cols),
                       new_df_19 %>% select(new_common_cols),
                       new_df_20 %>% select(new_common_cols),
                       new_df_21 %>% select(new_common_cols)))
+
+DNR_all_years <- janitor::clean_names(DNR_all_years)
 
 write.table(DNR_all_years, file = "data/DNR_all_years.csv", quote = FALSE, row.names = FALSE, sep = ',')
