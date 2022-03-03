@@ -49,7 +49,16 @@ server <- function(input, output) {
       labs(
         title = this_title
       ) +
-      annotate("text", x = max(filtered_df()$Sepal.Length), y = min(filtered_df()$Sepal.Width), hjust = 1, vjust = 0, label = lm_annot, parse = TRUE)
+      annotate(
+        "text", 
+        x = max(filtered_df()$Sepal.Length), 
+        y = min(filtered_df()$Sepal.Width), 
+        hjust = 1, 
+        vjust = 0, 
+        label = lm_annot, 
+        parse = TRUE,
+        size = 6
+      )
     
   })
   output$tbl = renderDT(
