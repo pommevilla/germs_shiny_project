@@ -1,17 +1,17 @@
 library(tidyverse)
 
 ## 1. Read in the four files
-df_18 <- readxl::read_xlsx('data/IowaDNR_2018_Data_Merged.xlsx', sheet = 'Sheet2')
+df_18 <- readxl::read_xlsx('../data/IowaDNR_2018_Data_Merged.xlsx', sheet = 'Sheet2')
 #View(df_18)
 
-df_19 <- readxl::read_xlsx('data/IowaDNR_2019_Data_Merged.xlsx', sheet = 'combined')
+df_19 <- readxl::read_xlsx('../data/IowaDNR_2019_Data_Merged.xlsx', sheet = 'combined')
 #View(df_19)
 
-df_20 <- readxl::read_xlsx('data/IowaDNR_2020_Data_Merged.xlsx', sheet = 'Sheet1')
+df_20 <- readxl::read_xlsx('../data/IowaDNR_2020_Data_Merged.xlsx', sheet = 'Sheet1')
 #View(df_20)
 
 
-df_21 <- readxl::read_xlsx('data/IowaDNR_2021_Data_Merged.xlsx', sheet = 'Sheet1')
+df_21 <- readxl::read_xlsx('../data/IowaDNR_2021_Data_Merged.xlsx', sheet = 'Sheet1')
 #View(df_21)
 
 ## 2. Find the columns that exist in all the 4 files
