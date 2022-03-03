@@ -7,6 +7,55 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
-library(tidyverse)
+library(tidymodels)
 ```
 
+# Read in data
+
+```{r}
+wine <- readr::read_csv("data/winequality-red.csv") %>% 
+  janitor::clean_names()
+```
+
+# EDA
+
+Maybe create bins for fixed_acidity
+
+```{r}
+hist(wine$fixed_acidity)
+```
+
+```{r}
+wine <- wine %>% 
+  mutate(
+    acidity_bin = case_when(
+      fixed_acidity < 6 ~ "low",
+      between(fixed_acidity, 6, 10) ~ "medium",
+      TRUE ~ "high"
+    )
+  ) %>% 
+  mutate(acidity_bin = fct_relevel(acidity_bin, "low", "medium", "high"))
+```
+
+```{r}
+wine %>% 
+  ggplot(aes(acidity_bin, quality)) + 
+  geom_boxplot() + 
+  theme_minimal()
+```
+
+# Creating Tidymodels Framework
+
+
+
+# Hyperparameter Tuning
+
+(...finishes with choosing the final hyperparameters)
+
+# Feature reduction
+
+(...finish with a reduced dataset maybe)
+
+# Training and testing
+
+# Evaluating metrics
