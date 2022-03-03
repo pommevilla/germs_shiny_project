@@ -15,7 +15,7 @@ ui <- dashboardPage(
     selectInput("v_species", "Flower Species",
                 choices = iris %>% distinct(Species)),
     
-    #radioButtons("iris_ci", "Do you want to display the 95% confidence interval of iris regression line?", ci_options, selected = TRUE),
+    radioButtons("iris_ci", "Display 95% Confidence Interval", ci_options, selected = TRUE),
     
     downloadButton(
       "report", 
@@ -27,13 +27,14 @@ ui <- dashboardPage(
     tabItems( 
       tabItem(tabName = "visualizations", fluidPage(fluidRow(column(12, plotOutput("iris_plot")) ), DTOutput('tbl'))),
       tabItem(tabName = "statistics", h2("Stuff"),
-              fluidPage(box("Does this work?")))
+              fluidPage(box("Placeholder")))
       ),
   )
 )
 
 server <- function(input, output) {
   filtered_df <- reactive(iris %>% filter(Species %in% input$v_species))
+  show_ci <- reactive(input$iris_ci %>% as.logical)
   
   output$iris_plot = renderPlot({
     
@@ -43,8 +44,7 @@ server <- function(input, output) {
     
     ggplot(filtered_df(), aes(x = Sepal.Length, y = Sepal.Width)) +
       geom_point() +
-      #geom_smooth(method = 'lm', se = input$iris_ci) +
-      geom_smooth(method = 'lm', se = TRUE) +
+      geom_smooth(method = 'lm', se = show_ci()) +
       theme_minimal() +
       theme(
         panel.grid.minor = element_blank(),
