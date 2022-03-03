@@ -45,9 +45,16 @@ server <- function(input, output) {
       geom_point() +
       #geom_smooth(method = 'lm', se = input$iris_ci) +
       geom_smooth(method = 'lm', se = TRUE) +
-      theme_minimal() + 
+      theme_minimal() +
+      theme(
+        panel.grid.minor = element_blank(),
+        panel.border = element_rect(color = "black", fill = NA, size = 1),
+        plot.title = element_text(hjust = 0.5)
+      ) +
       labs(
-        title = this_title
+        title = this_title,
+        x = "Sepal Width",
+        y = "Sepal Length"
       ) +
       annotate(
         "text", 
